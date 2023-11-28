@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fisher's F-Criterion Calculator</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d2933;
+        }
+
+        .container {
+            margin: 40px auto;
+            max-width: 1100px;
+            background-color: white;
+            padding: 20px 50px 50px;
+            border-radius: 30px;
+        }
+
+        label {
+            margin-bottom: 8px;
+            color: #4c95af;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            color: #28424b;
+            font-size: 14px;
+            margin-left: 200px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 280px;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid #0d2933;
+            outline: none;
+        }
+
+        .input {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            gap: 20px;
+        }
+
+        button {
+            background-color: #b0c4de;
+            color: black;
+            font-weight: bold;
+            padding: 15px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            float: right;
+        }
+
+        button:hover {
+            background-color: #4c95af;
+            color: white;
+        }
+
+        #result {
+            margin-top: 15px;
+            color: #28424b;
+            font-weight: bold;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4c95af;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="fisherIs">
+            <h1>The Fisher's F-criterion</h1>
+            <p><span style="font-weight: bold;color: #4c95af;">Fisher's F-criterion</span> is a statistical measure used
+                to assess whether the means of different groups or the
+                overall regression model are significantly different. It compares the explained variance by the model to
+                the
+                unexplained variance, helping determine if the model provides a significant improvement over a null
+                model.
+            </p>
+            <div class="formula">
+                <p>
+                    The formula for calculating the Fisher's F-criterion using the coefficient of determination is as
+                    follows:</p>
+                <img src="https://latex.codecogs.com/png.image?\dpi{110}&space;F=\frac{R^2}{1-R^2}\times\frac{\text{DF&space;Residuals}}{\text{DF&space;Model}}"
+                    title=" F=\frac{R^2}{1-R^2}\times\frac{\text{DF Residuals}}{\text{DF Model}}"
+                    style="margin-left: 400px;" />
+                <p>In this formula:</p>
+                <ul>
+                    <li><img src="https://latex.codecogs.com/png.image?\dpi{100}R^2" title="R^2" /> is the coefficient
+                        of
+                        determination,</li>
+                    <li><img src="https://latex.codecogs.com/png.image?\dpi{100}DF&space;Model" title="DF Model" />
+                        represents the degrees of freedom for the model (the number of factors in the model),</li>
+                    <li><img src="https://latex.codecogs.com/png.image?\dpi{100}1-R^2" title="1-R^2" /> represents the
+                        remaining variability in the data,</li>
+                    <li><img src="https://latex.codecogs.com/png.image?\dpi{100}DF&space;Residuals"
+                            title="DF Residuals" />
+                        is the degrees of freedom for the residuals (the number of observations minus the number of
+                        factors
+                        minus 1).
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <form id="fisherCriterionForm">
+            <div class="input">
+                <label for="rSquared">Coefficient of Determination (R²):</label>
+                <input type="number" id="rSquared" step="0.01" min="0" max="1" required />
+            </div>
+
+            <div class="input"><label for="numFactors">Number of Factors in the Model:</label>
+                <input type="number" id="numFactors" required />
+            </div>
+
+            <div class="input"><label for="numObservations">Number of Observations:</label>
+                <input type="number" id="numObservations" required />
+            </div>
+
+            <button type="button" onclick="calculateFisherCriterion()">
+                Calculate F-Criterion
+            </button>
+        </form>
+
+        <div id="result"></div>
+
+    </div>
+    <script>
+        function calculateFisherCriterion() {
+            // Get values from the form
+            var rSquared = parseFloat(document.getElementById("rSquared").value);
+            var numFactors = parseInt(document.getElementById("numFactors").value);
+            var numObservations = parseInt(
+                document.getElementById("numObservations").value
+            );
+
+            // Calculate the degrees of freedom for the model and error
+            var df1 = numFactors;
+            var df2 = numObservations - numFactors - 1;
+
+            // Calculate the F-criterion
+            var FCriterion = (rSquared / (1 - rSquared)) * (df2 / df1);
+
+            // the result
+            var resultMessage = `F-Criterion: ${FCriterion.toFixed(4)}<br>`;
+            resultMessage += `Degrees of Freedom (Model): ${df1}<br>`;
+            resultMessage += `Degrees of Freedom (Residuals): ${df2}`;
+
+            document.getElementById("result").innerHTML = resultMessage;
+        }
+    </script>
+</body>
+
+</html>
